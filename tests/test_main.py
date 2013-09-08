@@ -13,6 +13,7 @@ import unittest
 
 from watdarepo import identify_hosting_service
 from watdarepo import identify_vcs
+from watdarepo import watdarepo
 from watdarepo.main import UnknownHostingService
 from watdarepo.main import UnknownVCS
 
@@ -33,6 +34,11 @@ class TestIdentifyVcs(unittest.TestCase):
     def test_hg(self):
         repo_url = "ssh://hg@bitbucket.org/pydanny/static"
         self.assertEqual(identify_vcs(repo_url), "hg")
+
+        repo_url = "http://bitbucket.org/pydanny/static"
+        with self.assertRaises(UnknownVCS):
+            identify_vcs(repo_url), "hg"
+        self.assertEqual(identify_vcs(repo_url, guess=True), "hg")
 
     def test_svn(self):
         # easy check
@@ -67,7 +73,8 @@ class TestIdentifyHostingService(unittest.TestCase):
         self.assertEqual(identify_hosting_service(repo_url), "gitorious")
 
     def test_bitbucket(self):
-        pass
+        repo_url = "https://bitbucket/pydanny/static/"
+        self.assertEqual(identify_hosting_service(repo_url), "bitbucket")
 
     def test_sourceforge(self):
         pass
@@ -75,6 +82,31 @@ class TestIdentifyHostingService(unittest.TestCase):
     def test_failure(self):
         with self.assertRaises(UnknownHostingService):
             identify_hosting_service("American Hotdogs!")
+
+
+class TestWatDaRepo(unittest.TestCase):
+
+    def test_github(self):
+        repo_url = "git@github.com:pydanny/watdarepo.git"
+        data = watdarepo(repo_url)
+        self.assertEqual(data['vcs'], u'git')
+        self.assertEqual(data['hosting_service'], u'github')
+
+    def test_github_object_mode(self):
+        repo_url = "git@github.com:pydanny/watdarepo.git"
+        data = watdarepo(repo_url, mode='c')
+        self.assertEqual(data.vcs, u'git')
+        self.assertEqual(data.hosting_service, u'github')
+
+    def test_unknown_vcs(self):
+        repo_url = "http://not-identifiable-repo.com"
+        data = watdarepo(repo_url)
+        self.assertEqual(data['vcs'], None)
+
+    def test_unknown_hosting_service(self):
+        repo_url = "http://not-identifiable-repo.com"
+        data = watdarepo(repo_url)
+        self.assertEqual(data['hosting_service'], None)
 
 if __name__ == '__main__':
     unittest.main()

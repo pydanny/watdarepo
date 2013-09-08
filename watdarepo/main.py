@@ -13,7 +13,7 @@ import sys
 PY3 = sys.version > '3'
 
 if PY3:
-    unicode = str
+    unicode = str  # pragma: no cover
 
 
 class UnknownVCS(Exception):
@@ -37,7 +37,7 @@ class RepoData(object):
     """
 
     def __init__(self, repo_data):
-        self.update(repo_data)
+        self.__dict__.update(repo_data)
 
 
 def identify_vcs_vs_alias(repo_url, guess=False):
@@ -73,6 +73,10 @@ def identify_vcs(repo_url, guess=False):
     vcs = identify_vcs_vs_alias(no_prefix, guess=guess)
     if vcs:
         return vcs
+
+    if guess:
+        if "bitbucket" in repo_url:
+            return "hg"
 
     raise UnknownVCS
 
@@ -124,6 +128,3 @@ def watdarepo(repo_url, mode='d', guess=False):
     # return dictionary representation of data.
     return repo_data
 
-
-if __name__ == "__main__":
-    pass
