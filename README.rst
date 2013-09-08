@@ -12,7 +12,7 @@ watdarepo
         :target: https://crate.io/packages/watdarepo?version=latest
 
 
-Determines type and host of a repo.
+Determines type and host of a repo. 
 
 * Free software: BSD license
 * Documentation: http://watdarepo.rtfd.org.
@@ -20,4 +20,16 @@ Determines type and host of a repo.
 Features
 --------
 
-* TODO
+Works to some degree with the following VCS:
+
+* Git
+* Mercurial
+* SVN
+
+Works to some degree with the following hosting services:
+
+* GitHub
+* BitBucket
+* GitLab
+* Gitorious
+* Sourceforge
