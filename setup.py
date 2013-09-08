@@ -4,6 +4,8 @@
 import os
 import sys
 
+import watdarepo
+version = watdarepo.__version__
 
 try:
     from setuptools import setup
@@ -12,6 +14,9 @@ except ImportError:
 
 if sys.argv[-1] == 'publish':
     os.system('python setup.py sdist upload')
+    print("You probably want to also tag the version now:")
+    print("  git tag -a %s -m 'version %s'" % (version, version))
+    print("  git push --tags")
     sys.exit()
 
 readme = open('README.rst').read()
@@ -19,7 +24,7 @@ history = open('HISTORY.rst').read().replace('.. :changelog:', '')
 
 setup(
     name='watdarepo',
-    version='0.1.0',
+    version=version,
     description='Determines type and host of a repo.',
     long_description=readme + '\n\n' + history,
     author='Daniel Greenfeld',
