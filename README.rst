@@ -47,3 +47,9 @@ Usage
         u'hosting_service': u'github',
         u'repo_url': u'https://github.com/pydanny/watdarepo'
     }
+
+Related Projects
+-----------------
+
+* **Dulwich** is a Python Git API and does not have any discovery features.
+* **VCS** works with both Git and Mercurial, incorporates Dulwich, but does not appear to have any discovery features.
