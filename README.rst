@@ -11,6 +11,9 @@ watdarepo
 .. image:: https://pypip.in/d/watdarepo/badge.png
         :target: https://crate.io/packages/watdarepo?version=latest
 
+.. image:: https://coveralls.io/repos/audreyr/cookiecutter/badge.png?branch=master
+        :target: https://coveralls.io/r/audreyr/cookiecutter?branch=master
+
 
 Determines type and host of a repo. 
 
