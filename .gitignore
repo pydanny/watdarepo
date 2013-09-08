@@ -25,6 +25,7 @@ pip-log.txt
 .coverage
 .tox
 nosetests.xml
+htmlcov
 
 # Translations
 *.mo
@@ -33,10 +34,6 @@ nosetests.xml
 .mr.developer.cfg
 .project
 .pydevproject
-
-# Complexity
-output/*.html
-output/*/index.html
 
 # Sphinx
 docs/_build

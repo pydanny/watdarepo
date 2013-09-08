@@ -11,7 +11,9 @@ Tests for `watdarepo` module.
 import sys
 import unittest
 
+from watdarepo import identify_hosting_service
 from watdarepo import identify_vcs
+from watdarepo.main import UnknownHostingService
 from watdarepo.main import UnknownVCS
 
 if sys.version_info[:2] < (2, 7):
@@ -40,11 +42,39 @@ class TestIdentifyVcs(unittest.TestCase):
         # Throw an error because it can't find the Repo host
         repo_url = "docutils.svn.sourceforge.net"
         with self.assertRaises(UnknownVCS):
-            self.assertEqual(identify_vcs(repo_url), "svn")
+            identify_vcs(repo_url)
 
         # make a guess
         self.assertEqual(identify_vcs(repo_url, guess=True), "svn")
 
+
+class TestIdentifyHostingService(unittest.TestCase):
+
+    def test_github(self):
+        repo_url = "git@github.com:pydanny/watdarepo.git"
+        self.assertEqual(identify_hosting_service(repo_url), "github")
+        repo_url = "https://github.com/pydanny/watdarepo.git"
+        self.assertEqual(identify_hosting_service(repo_url), "github")
+
+    def test_gitlab(self):
+        repo_url = "http://demo.gitlab.com/"
+        self.assertEqual(identify_hosting_service(repo_url), "gitlab")
+
+    def test_gitorious(self):
+        repo_url = "git://gitorious.org/gitorious/mainline.git"
+        self.assertEqual(identify_hosting_service(repo_url), "gitorious")
+        repo_url = "http://git.gitorious.org/gitorious/mainline.git"
+        self.assertEqual(identify_hosting_service(repo_url), "gitorious")
+
+    def test_bitbucket(self):
+        pass
+
+    def test_sourceforge(self):
+        pass
+
+    def test_failure(self):
+        with self.assertRaises(UnknownHostingService):
+            identify_hosting_service("American Hotdogs!")
 
 if __name__ == '__main__':
     unittest.main()

@@ -46,15 +46,18 @@ setup(
     zip_safe=False,
     keywords='watdarepo, git, hg, mercurial, svn, bzr',
     classifiers=[
-        'Development Status :: 2 - Pre-Alpha',
+        'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: BSD License',
+        'Operating System :: OS Independent',
         'Natural Language :: English',
         "Programming Language :: Python :: 2",
         'Programming Language :: Python :: 2.6',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.3',
+        'Topic :: Software Development :: Version Control',
+        'Topic :: Utilities'
     ],
     test_suite='tests',
     tests_require=test_requirements
