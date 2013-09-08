@@ -25,6 +25,7 @@ Works to some degree with the following VCS:
 * Git
 * Mercurial
 * SVN
+* BZR
 
 Works to some degree with the following hosting services:
 
@@ -33,3 +34,16 @@ Works to some degree with the following hosting services:
 * GitLab
 * Gitorious
 * Sourceforge
+
+Usage
+-----
+
+::
+
+    >>> from watdarepo import watdarepo
+    >>> watdarepo("https://github.com/pydanny/watdarepo")
+    {
+        u'vcs': u'git',
+        u'hosting_service': u'github',
+        u'repo_url': u'https://github.com/pydanny/watdarepo'
+    }

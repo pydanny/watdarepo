@@ -8,6 +8,12 @@ watdarepo.main
 """
 
 from __future__ import unicode_literals
+import sys
+
+PY3 = sys.version > '3'
+
+if PY3:
+    unicode = str
 
 
 class UnknownVCS(Exception):
@@ -55,6 +61,7 @@ def identify_vcs(repo_url, guess=False):
     :param repo_url: Repo URL of unknown type.
     :returns: VCS type (git, hg, etc) or raises UnknownVCS exception.
     """
+    repo_url = unicode(repo_url)
 
     # Do basic alias check
     vcs = identify_vcs_vs_alias(repo_url, guess=guess)
@@ -76,6 +83,7 @@ def identify_hosting_service(repo_url):
     :param repo_url: Repo URL of unknown type.
     :returns: Hosting service or raises UnknownHostingService exception.
     """
+    repo_url = unicode(repo_url)
 
     for service in HOSTING_SERVICES:
         if service in repo_url:
@@ -92,6 +100,7 @@ def watdarepo(repo_url, mode='d', guess=False):
     :param guess: Whether or not to make guesses
     :returns: Hosting service or raises UnknownHostingService exception.
     """
+    repo_url = unicode(repo_url)
 
     # Set the repo_url
     repo_data = {'repo_url': repo_url}
