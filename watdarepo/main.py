@@ -31,15 +31,6 @@ HOSTING_SERVICES = ("gitlab",
                     "sourceforge")
 
 
-class RepoData(object):
-    """ Bunch class to provide an object representation
-        instead of a dictionary representation.
-    """
-
-    def __init__(self, repo_data):
-        self.__dict__.update(repo_data)
-
-
 def identify_vcs_vs_alias(repo_url, guess=False):
     for repo_alias in REPO_ALIASES:
         if repo_url.startswith(repo_alias):
@@ -123,7 +114,10 @@ def watdarepo(repo_url, mode='d', guess=False):
 
     # If mode is 'c' or 'o', return an object representation of data.
     if mode in ('c', 'o'):
-        return RepoData(repo_data)
+        # Define the c/o response class
+        Repo = type(str('Repo'), (object,), repo_data)
+        # Return the c/o response object
+        return Repo()
 
     # return dictionary representation of data.
     return repo_data
