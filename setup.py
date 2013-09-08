@@ -22,6 +22,11 @@ if sys.argv[-1] == 'publish':
 readme = open('README.rst').read()
 history = open('HISTORY.rst').read().replace('.. :changelog:', '')
 
+test_requirements = []
+# Add Python 2.6-specific dependencies
+if sys.version_info[:2] < (2, 7):
+    test_requirements.append('unittest2')
+
 setup(
     name='watdarepo',
     version=version,
@@ -39,7 +44,7 @@ setup(
     ],
     license="BSD",
     zip_safe=False,
-    keywords='watdarepo',
+    keywords='watdarepo, git, hg, mercurial, svn, bzr',
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
         'Intended Audience :: Developers',
@@ -52,4 +57,5 @@ setup(
         'Programming Language :: Python :: 3.3',
     ],
     test_suite='tests',
+    tests_require=test_requirements
 )

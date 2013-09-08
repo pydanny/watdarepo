@@ -8,10 +8,16 @@ test_watdarepo
 Tests for `watdarepo` module.
 """
 
+import sys
 import unittest
 
 from watdarepo import identify_vcs
 from watdarepo.main import UnknownVCS
+
+if sys.version_info[:2] < (2, 7):
+    import unittest2 as unittest
+else:
+    import unittest
 
 
 class TestIdentifyVcs(unittest.TestCase):
