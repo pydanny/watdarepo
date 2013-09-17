@@ -31,8 +31,8 @@ HOSTING_SERVICES = ("gitlab",
                     "sourceforge")
 
 
-def identify_vcs_vs_alias(repo_url, guess=False):
-    for repo_alias in REPO_ALIASES:
+def identify_vcs_vs_alias(repo_url, guess=False, repo_aliases=REPO_ALIASES):
+    for repo_alias in repo_aliases:
         if repo_url.startswith(repo_alias):
             return repo_alias
 
@@ -46,7 +46,7 @@ def identify_vcs_vs_alias(repo_url, guess=False):
     return None
 
 
-def identify_vcs(repo_url, guess=False):
+def identify_vcs(repo_url, guess=False, repo_aliases=REPO_ALIASES):
     """
     Determines the type of repo that `repo_url` represents.
     :param repo_url: Repo URL of unknown type.
@@ -55,13 +55,13 @@ def identify_vcs(repo_url, guess=False):
     repo_url = unicode(repo_url)
 
     # Do basic alias check
-    vcs = identify_vcs_vs_alias(repo_url, guess=guess)
+    vcs = identify_vcs_vs_alias(repo_url, guess=guess, repo_aliases=repo_aliases)
     if vcs:
         return vcs
 
     # remove prefix and try again
     no_prefix = ''.join(repo_url.split("//")[1:])
-    vcs = identify_vcs_vs_alias(no_prefix, guess=guess)
+    vcs = identify_vcs_vs_alias(no_prefix, guess=guess, repo_aliases=repo_aliases)
     if vcs:
         return vcs
 
@@ -72,7 +72,7 @@ def identify_vcs(repo_url, guess=False):
     raise UnknownVCS
 
 
-def identify_hosting_service(repo_url):
+def identify_hosting_service(repo_url, hosting_services=HOSTING_SERVICES):
     """
     Determines the hosting service of `repo_url`.
     :param repo_url: Repo URL of unknown type.
@@ -80,14 +80,14 @@ def identify_hosting_service(repo_url):
     """
     repo_url = unicode(repo_url)
 
-    for service in HOSTING_SERVICES:
+    for service in hosting_services:
         if service in repo_url:
             return service
 
     raise UnknownHostingService
 
 
-def watdarepo(repo_url, mode='d', guess=False):
+def watdarepo(repo_url, mode='d', guess=False, repo_aliases=REPO_ALIASES, hosting_services=HOSTING_SERVICES):
     """
     Gets vcs and hosting service for repo_urls
     :param repo_url: Repo URL of unknown type.
@@ -95,6 +95,7 @@ def watdarepo(repo_url, mode='d', guess=False):
     :param guess: Whether or not to make guesses
     :returns: Hosting service or raises UnknownHostingService exception.
     """
+
     repo_url = unicode(repo_url)
 
     # Set the repo_url
@@ -102,13 +103,13 @@ def watdarepo(repo_url, mode='d', guess=False):
 
     # Get the VCS type
     try:
-        repo_data['vcs'] = identify_vcs(repo_url)
+        repo_data['vcs'] = identify_vcs(repo_url, repo_aliases=repo_aliases)
     except UnknownVCS:
         repo_data['vcs'] = None
 
     # Get the hosting service
     try:
-        repo_data['hosting_service'] = identify_hosting_service(repo_url)
+        repo_data['hosting_service'] = identify_hosting_service(repo_url, hosting_services=hosting_services)
     except UnknownHostingService:
         repo_data['hosting_service'] = None
 

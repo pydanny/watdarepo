@@ -16,6 +16,8 @@ from watdarepo import identify_vcs
 from watdarepo import watdarepo
 from watdarepo.main import UnknownHostingService
 from watdarepo.main import UnknownVCS
+from watdarepo.main import HOSTING_SERVICES
+from watdarepo.main import REPO_ALIASES
 
 if sys.version_info[:2] < (2, 7):
     import unittest2 as unittest
@@ -53,6 +55,12 @@ class TestIdentifyVcs(unittest.TestCase):
         # make a guess
         self.assertEqual(identify_vcs(repo_url, guess=True), "svn")
 
+    def test_custom(self):
+        repo_aliases = tuple(list(REPO_ALIASES) + ['bzr'])
+        repo_url = "http://bzr.example.com/"
+
+        self.assertEqual(identify_vcs(repo_url, guess=True, repo_aliases=repo_aliases), "bzr")
+
 
 class TestIdentifyHostingService(unittest.TestCase):
 
@@ -76,6 +84,12 @@ class TestIdentifyHostingService(unittest.TestCase):
         repo_url = "https://bitbucket/pydanny/static/"
         self.assertEqual(identify_hosting_service(repo_url), "bitbucket")
 
+    def test_custom(self):
+        hosting_services = tuple(list(HOSTING_SERVICES) + ['kiln'])
+        repo_url = "http://example.kiln.com/"
+
+        self.assertEqual(identify_hosting_service(repo_url, hosting_services=hosting_services), "kiln")
+
     def test_sourceforge(self):
         pass
 
@@ -91,6 +105,16 @@ class TestWatDaRepo(unittest.TestCase):
         data = watdarepo(repo_url)
         self.assertEqual(data['vcs'], u'git')
         self.assertEqual(data['hosting_service'], u'github')
+
+    def test_custom(self):
+        # bzr on kiln is NOT an actual thing.
+        hosting_services = tuple(list(HOSTING_SERVICES) + ['kiln'])
+        repo_aliases = tuple(list(REPO_ALIASES) + ['bzr'])
+
+        repo_url = "http://example.kiln.com/myrepo.bzr"
+        data = watdarepo(repo_url, guess=True, repo_aliases=repo_aliases, hosting_services=hosting_services)
+        self.assertEqual(data['vcs'], u'bzr')
+        self.assertEqual(data['hosting_service'], u'kiln')
 
     def test_github_object_mode(self):
         repo_url = "git@github.com:pydanny/watdarepo.git"
