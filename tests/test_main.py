@@ -37,7 +37,7 @@ class TestIdentifyVcs(unittest.TestCase):
 
         repo_url = "http://bitbucket.org/pydanny/static"
         with self.assertRaises(UnknownVCS):
-            identify_vcs(repo_url), "hg"
+            identify_vcs(repo_url)
         self.assertEqual(identify_vcs(repo_url, guess=True), "hg")
 
     def test_svn(self):
