@@ -3,6 +3,12 @@
 History
 -------
 
+0.3.0 (2013-09-??)
+++++++++++++++++++
+
+* Allows for overrides of default repo_aliases and hosting services.
+
+
 0.2.0 (2013-09-08)
 ++++++++++++++++++
 
